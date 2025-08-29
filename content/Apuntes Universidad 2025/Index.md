@@ -6,6 +6,7 @@ longform:
   sceneFolder: /
   scenes:
     - Clase de Ejemplo
+    - 
   sceneTemplate: templates/Clase.md
   ignoredFiles: []
 ---

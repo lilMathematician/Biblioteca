@@ -1,6 +1,6 @@
 ---
-title: Welcome to Quartz
+title: Bienvenido a mi almacén de apuntes 🗃
 ---
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+Soy Oscar Ferrada, esta pagina esta hecha con Quartz + Obsidian + Github Pages. Principalmente la función de este sitio es almacenar mis apuntes en un sitio mas bonito que drive.
+
