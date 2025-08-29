@@ -1,6 +1,6 @@
 ---
 title: <% tp.file.title%>
 date: true
-cssclasses:
+description:
 ---
- 
+ejemplo de clase lol
