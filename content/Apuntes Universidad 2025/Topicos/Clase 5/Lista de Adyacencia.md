@@ -1,0 +1,2 @@
+Esta forma de representacion de de los vertices y las aristas que los conectan entre si. En terminos concretos, estos se ven asi
+![[Drawing 2025-08-27 14.23.28.excalidraw|500]]donde su orden de representacion es del orden de $O(m+n)$

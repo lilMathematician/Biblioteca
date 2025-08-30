@@ -1,5 +1,11 @@
-Este es un indice de ejemplo
-
+El curso seguirá los siguientes tópicos: [[Programa]]. Ademas, los libros guia a usar serán:
+- [Analaisis funcional de Brazis](https://drive.google.com/file/d/1bgxUv5zU-eTr1gsDwRY-vrG95jKGG-xr/view?usp=sharing)
+- [Analisis funcional de Muscat](https://drive.google.com/file/d/1XvSB7Zb-qHMEvAaqlvs5QTHRQnKoG4z8/view?usp=sharing)
+- [Lecturas de Princenton de Stein](https://drive.google.com/file/d/1oBNmqht_Mq0Azk1IwHrxIIoV2G52N0ZA/view?usp=sharing)
 ---
-- [[Clase 1|Ejemplo de clase]]
-- 
+- [[Clase 1 (1801)|Introducción a Hilbert]]
+- [[Clase 2|Ortogonalidad]]
+- [[Clase 3 (2108)|Bases y Operadores Unitarios]]
+- [[Clase 4 (2508)|Demostracion Lema anterior]]
+- [[Clase 5 (2608)|Subespacios Cerrados y Proyecciones Ortogonales]]
+- [[Clase 6|Operadores y funcionales lineales]]

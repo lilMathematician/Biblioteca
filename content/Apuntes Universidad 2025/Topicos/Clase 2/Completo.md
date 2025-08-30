@@ -1,0 +1,1 @@
+Este sigue el mismo razonamiento, un grafo es completo, cuando para todos los pares de vertices en $V$ se tiene una arista que nos comunica. Asi$$K_n=\left([n],\binom{[n]}{2}\right)=\left([n],\{U\in[n];|U|=2\}\right)$$

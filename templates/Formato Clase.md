@@ -1,5 +1,6 @@
 ---
-title: <% tp.file.title%>
-date: true
+Title: {{title}} 
+Date: {{date}} 
+Time: {{time}}
 description:
 ---

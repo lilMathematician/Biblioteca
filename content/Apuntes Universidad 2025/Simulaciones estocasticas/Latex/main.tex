@@ -1,0 +1,149 @@
+\documentclass[12pt,]{article}
+\usepackage{authblk}
+\usepackage{fullpage}
+\usepackage{amssymb,amsmath}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{siunitx}
+\usepackage[version=3]{mhchem}
+
+\usepackage{natbib}
+\bibliographystyle{ametsoc2014}
+
+% \usepackage[left]{lineno}
+% \linenumbers
+% comentado pq los numeros quedaban raro
+
+\usepackage{setspace}
+\doublespacing
+
+\usepackage[unicode=true]{hyperref}
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            colorlinks=false,
+            pdfborder={0 0 0}}
+\urlstyle{same}
+
+\setcounter{secnumdepth}{5}
+
+\usepackage{graphicx}
+
+\makeatletter
+\def\ScaleWidthIfNeeded{%
+ \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\def\ScaleHeightIfNeeded{%
+  \ifdim\Gin@nat@height>0.9\textheight
+    0.9\textheight
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+\setkeys{Gin}{width=\ScaleWidthIfNeeded,height=\ScaleHeightIfNeeded,keepaspectratio}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{(Borrador) Simulaciones computacionales y validación numérica de tiempos de extinción en modelos estocásticos de crecimiento sublineal}
+\author[1]{Oscar Ferrada}
+\affil[1]{Leonardo Videla}
+
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+
+\newpage
+\section*{Abstract}
+Este proyecto propone un estudio computacional exhaustivo que valide y complemente las predicciones teóricas recientes sobre la extinción y la viabilidad ecológica en modelos de crecimiento sublineal, en particular las conclusiones presentes en el manuscrito en que está trabajando el académico Leonardo Videla et al. (2025). 
+Se implementarán tres clases de modelos estocásticos 
+(i) procesos de nacimiento-muerte individuales (discreto), 
+(ii) difusión tipo Feller con ruido demográfico,
+(iii) la aproximación difusiva (diffusion approximation)
+para cuantificar tiempos medios de extinción, probabilidades de supervivencia y escalas temporales según el parámetro $\theta$, la capacidad de carga $K$, y la intensidad del ruido. 
+Emplearemos métodos directos (Gillespie), esquemas SDE (Euler–Maruyama, Milstein) y técnicas de rare-event (Adaptive Multilevel Splitting, importance sampling, Fleming–Viot/cloning) **--Admito que estos métodos los sugirió el LLM que utilicé para obtener recomendaciones de métodos de simulación--** para estimar tiempos de extinción que escalan exponencialmente con $K$. 
+Los resultados validarán (o matizarán) las proposiciones teóricas: extinción en escalas exponenciales para procesos discretos con $\theta\le 0$ (Proposición 1.4), umbral crítico en la difusión Feller ($\theta=-1$, Proposición 2.1) y extinción casi segura para la aproximación difusiva (Proposición 2.2). El código y rutinas de simulación se liberarán como paquete reproducible y GUIs/ notebooks para la comunidad ecológica, facilitando la exploración de escenarios prácticos para conservación.
+\newpage
+
+\section{Introduccion}
+Como contexto, aunque los modelos deterministas sublineales se conocen hace medio siglo, hace poco han vuelto a la palestra como una respuesta al debate entre diversidad y estabilidad con el fin de explicar patrones macroecológicos recientes aunque su interpretación biológica es debatida debido a tasas per-cápita no acotadas cuando $x\to0$. En el documento donde el profesor Leonardo se encuentra trabajando presentan una caracterización teórica de versiones estocásticas (procesos nacimiento-muerte, difusión Feller y aproximación difusiva) y muestran que las propiedades de extinción dependen fuertemente del tipo de ruido y de $\theta$: por ejemplo, extinción casi segura/No extinción/tiempos exponenciales según el modelo y $\theta$. Estas proposiciones requieren una validación numérica robusta porque las implicancias ecológicas (predicción de colapsos, diseño de medidas de conservación) dependen de la escala temporal estimada —algo que la ecología aplicada necesita cuantificar con simulaciones reproducibles y herramientas accesibles.
+
+\section{Objetivos}
+
+Validar numéricamente y cuantificar las escalas temporales de extinción y la viabilidad ecológica en modelos estocásticos de crecimiento sublineal, contrastando resultados computacionales con las predicciones teóricas.
+
+\subsection{Objetivos específicos}
+\begin{itemize}
+    \item Implementar y simular procesos de nacimiento-muerte discretos para rangos de $\theta$ (incluyendo $\theta\le 0$) y verificar la predicción de tiempos de extinción que escalan exponencialmente en $K$ (Proposición 1.4).
+    \item Implementar la difusión Feller $dX_t = X_t\frac{1-X_t^\theta}{\theta}dt + \sqrt{\gamma X_t}\,dB_t$; comprobar numéricamente que:
+    \begin{itemize}
+        \item para $\theta\ge -1$ la extinción ocurre casi seguramente en tiempo finito; 
+        \item para $\theta < -1$ la extensión de supremum/infimum implica que no ocurre extinción en tiempo finito (Proposición 2.1).
+    \end{itemize}
+    \item Implementar y simular la aproximación difusiva $dZ_t = Z_t\tfrac{1-Z^\theta_t}{\theta}dt + \sqrt{\tfrac{Z_t}{K|\theta|}(1+Z_t^\theta)}\,dB_t$ y verificar que la extinción casi segura se cumple para todo $\theta$ (Proposición 2.2).
+    \item Estudiar la influencia de $\theta$ en escalas de tiempo de extinción en el intervalo empírico $\theta\in[-2,2]$ (por ejemplo, malla fina) y producir mapas de riesgo y curvas de escalamiento (ej.: $\log \mathbb{E}[T_{\mathrm{ext}}] vs K$).
+\end{itemize}
+
+\section{Procedimiento}
+\subsection{Modelos y parámetros, extraidos de la informacion de soporte}
+\begin{itemize}
+    \item Parámetros a barrer: $\theta\in[-2,2]$ , $K\in\{50,100,200,500,1000,2000\}$, $\gamma$ (ruido demográfico en difusión Feller) en $\{0.1,0.5,1.0,2.0\}$, $\alpha$ (si aplica) en $\{0,0.1,1\}$.
+    \item Condiciones iniciales: pequeñas poblaciones (por ejemplo $x_0=1/K$), densidades medias ($x_0=0.1,\,0.5$), y análisis de sensibilidad al estado inicial.
+    \item Modelos a simular: 
+    \begin{enumerate}
+        \item nacimiento-muerte discreto (Gillespie), 
+	\item SDE Feller (demográfico) con término $\sqrt{\gamma X_t}$, 
+	\item difusión aproximada (como en la ecuación propuesta). Todas las ecuaciones correspondientes y proposiciones del academico patrocinante
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Algoritmos numéricos y técnicas especiales}
+\begin{itemize}
+    \item Procesos nacimiento-muerte (discreto)
+    \item SDEs (Feller y aproximación difusiva)
+    \item Estimación de tiempos de extinción y análisis estadístico
+    \item  Herramientas de reducción de varianza / rare event
+\end{itemize}
+
+\subsection{Reproductibilidad y software}
+\begin{itemize}
+    \item Lenguaje principal: **Python 3.10+**. Librerías: NumPy, SciPy, Numba (para kernels rápidos), JAX opcional para paralelización en GPU, SDEint / custom solvers, matplotlib/plotly para visualizaciones.
+    \item Código: paquete modular (simuladores, rare-event, análisis) con tests unitarios y notebooks Jupyter que reproducen figuras clave.
+    \item Entrega: repositorio en GitHub/GitLab con CI (tests limitados, ejemplo small runs), DOI en Zenodo para release final.
+    \item GUI/Notebooks: dashboards (Voila/Streamlit) con sliders para $\theta, K, \gamma$ y producción de mapas de riesgo.
+\end{itemize}
+    
+\subsection{Validación y contraste con teoría}
+\begin{itemize}
+    \item Comparar numéricamente:
+    \begin{itemize}
+        \item Proposición 1.4: comportamiento exponencial en K para $\theta\le 0$ en el birth-death.
+        \item Proposición 2.1 :comportamiento de la difusión Feller con el umbral $\theta=-1$.
+        \item Proposición 2.2 : extinción casi segura en la aproximación difusiva para todo $\theta$.
+    \end{itemize}
+    \item Producción de curvas y mapas empíricos que muestren la región de parámetros donde cada modelo es “biológicamente creíble” desde el punto de vista de la escala temporal de extinción.
+\end{itemize}
+
+
+\newpage\clearpage
+
+% Comentado por desuso
+
+% \renewcommand\refname{References}
+% % This is the default "example" bibtex file which ships with the distribution. Be sure to
+% % comment out the following line if you want to disable citing all bibtex entries by
+% % default.
+% \bibliography{xampl.bib}
+% \newpage
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

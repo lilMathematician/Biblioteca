@@ -1,0 +1,1 @@
+Este es un tipo de **paseo cerrado**, donde no existen repeticiones de vertices, salvo los terminales.

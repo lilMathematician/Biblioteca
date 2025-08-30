@@ -1,0 +1,1 @@
+corresponden a paseos, dpnde los vertices terminales son los mismos

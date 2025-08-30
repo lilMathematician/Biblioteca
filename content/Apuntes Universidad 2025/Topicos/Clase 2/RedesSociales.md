@@ -1,0 +1,2 @@
+Para este caso particular, los grafos están dotados de un alto coeficiente de agrupamiento, en parte por culpa de fenomenos como **small-world** y **power-law**. Este ultimo nos dice que *el numero de usuarios con k conexiones es equivalente a $k^{\alpha},\quad2<\alpha<3$* 
+![[Drawing 2025-08-19 19.35.20.excalidraw]]

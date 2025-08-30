@@ -13,5 +13,5 @@ longform:
 
 ## 2do semestre
 
-- [[Índice|Análisis Funcional]] 
-- y otros ramos qlos
+- [[content/Apuntes Universidad 2025/Funcional/Índice|Análisis Funcional]] 
+- [[content/Apuntes Universidad 2025/Topicos/Índice|Topicos de la Computación]]

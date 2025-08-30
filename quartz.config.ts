@@ -1,5 +1,6 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
+import { Pseudocode as CommunityPseudocode } from "quartz-pseudocode"
 
 /**
  * Quartz 4 Configuration
@@ -8,7 +9,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
+    pageTitle: "Biblioteca 📜",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
@@ -55,6 +56,22 @@ const config: QuartzConfig = {
   },
   plugins: {
     transformers: [
+      CommunityPseudocode({
+        codeLang: "pseudo",
+        placeholderCssClass: "pseudocode-placeholder",
+        removeCaptionCount: false,
+        renderer: {
+            identSize: "1.2em",
+            commentDelimiter: "//",
+            lineNumberPunc: ":",
+            lineNumber: false,
+            noEnd: false,
+            captionCount: undefined,
+            titlePrefix: "Algorithm",
+            mathEngine: undefined,
+            mathRenderer: undefined
+        }
+      }),
       Plugin.FrontMatter(),
       Plugin.CreatedModifiedDate({
         priority: ["frontmatter", "git", "filesystem"],
@@ -71,7 +88,7 @@ const config: QuartzConfig = {
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
-      Plugin.Latex({ renderEngine: "katex" }),
+      Plugin.Latex({ renderEngine: "mathjax" }),
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [

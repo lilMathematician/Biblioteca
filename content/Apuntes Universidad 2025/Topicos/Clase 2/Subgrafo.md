@@ -1,0 +1,1 @@
+No es mas que un grafo contenido en otro, en toda la extención de la palabra. Diremos que $G'=(V',E')$ es **subgrafo** de $G$, si el conjunto $V'$ esta contenido en $V$ y lo mismo para $E'$ con $E$.
