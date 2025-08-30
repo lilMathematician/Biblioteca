@@ -20,6 +20,7 @@ Esta es la version *base* de este algoritmo y sigue la siguiente estructura
 	\end{algorithmic}
 	\end{algorithm}
 ```
+Imagen de referencia: [[Pasted image 20250830173116.png]]
 ## Version Recursiva
 ```pseudo
 	\begin{algorithm}
@@ -36,6 +37,8 @@ Esta es la version *base* de este algoritmo y sigue la siguiente estructura
 	\end{algorithmic}
 	\end{algorithm}
 ```
+Imagen de referencia: [[Pasted image 20250830173138.png]]
+
 ---
 
 Supongamos que tenemos el siguiente grafo con su lista:
@@ -74,6 +77,7 @@ una aplicacion de este algoritmo seria
 	\end{algorithmic}
 	\end{algorithm}
 ```
+Imagen de referencia: [[Pasted image 20250830173211.png]]
 Con esto tenemos que la lista de vertices es $\{s,a,c,d,e\}$
 
 ---

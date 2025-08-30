@@ -33,6 +33,8 @@ Luego, el proceso se lleva a cabo mediante el siguiente pseudocodigo
 	\end{algorithmic}
 	\end{algorithm}
 ```
+Imagen de referencia: [[Pasted image 20250830172922.png]]
+
 ---
 Por ultimo, del siguiente grafo 
 ![[BFS 2025-08-27 14.59.58.excalidraw|center|500]]
